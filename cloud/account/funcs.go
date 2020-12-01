@@ -123,6 +123,18 @@ func Delete(c pc.PrismaCloudClient, cloudType, id string) error {
 	return err
 }
 
+// Disable disables an onboarded cloud account using the cloud account ID.
+func Disable(c pc.PrismaCloudClient, cloudType, id string) error {
+	c.Log(pc.LogAction, "(disable) %s type:%s id:%s", singular, cloudType, id)
+
+	path := make([]string, 0, len(Suffix)+2)
+	path = append(path, Suffix...)
+	path = append(path, cloudType, id)
+
+	_, err := c.Communicate("PATCH", path, nil, map[string]interface{}{"enabled": false}, nil)
+	return err
+}
+
 func createUpdate(exists bool, c pc.PrismaCloudClient, account interface{}) error {
 	var (
 		cloudType string
