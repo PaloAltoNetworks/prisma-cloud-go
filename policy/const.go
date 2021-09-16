@@ -10,6 +10,7 @@ const (
 	RuleTypeConfig     = "Config"
 	RuleTypeAuditEvent = "AuditEvent"
 	RuleTypeNetwork    = "Network"
+	RuleTypeAnomaly    = "Anomaly"
 )
 
 // Valid values for Policy.PolicyType.
@@ -17,6 +18,7 @@ const (
 	PolicyTypeConfig     = "config"
 	PolicyTypeAuditEvent = "audit_event"
 	PolicyTypeNetwork    = "network"
+	PolicyTypeAnomaly    = "anomaly"
 )
 
 // Valid values for Policy.Rule.Severity.
