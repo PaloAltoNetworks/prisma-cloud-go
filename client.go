@@ -346,3 +346,13 @@ func (c *Client) communicate(method string, suffix []string, query, data interfa
 
 	return body, nil
 }
+
+func (c *Client) DoJira(req *http.Request) (*http.Response, error) {
+	if len(c.pcResponses) == 0 {
+		return c.con.Do(req)
+	}
+
+	resp := c.pcResponses[c.pcResponseIndex]
+	c.pcResponseIndex++
+	return resp, nil
+}

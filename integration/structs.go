@@ -33,6 +33,11 @@ type IntegrationConfig struct {
 	Tables  []map[string]bool `json:"tables,omitempty"`
 	Version string            `json:"version,omitempty"`
 
+	//Jira
+	//HostUrl string `json:"hostUrl,omitempty"`
+	SecretKey   string `json:"secretKey,omitempty"`
+	OauthToken  string `json:"oauthToken,omitempty"`
+	ConsumerKey string `json:"consumerKey,omitempty"`
 	// Webhook.
 	Url     string   `json:"url,omitempty"`
 	Headers []Header `json:"headers,omitempty"`
@@ -43,6 +48,10 @@ type IntegrationConfig struct {
 
 	// Slack
 	WebHookUrl string `json:"webhookUrl,omitempty"`
+
+	// Google CSCC
+	SourceId string `json:"sourceId,omitempty"`
+	OrgId    string `json:"orgId,omitempty"`
 }
 
 type Header struct {
@@ -68,4 +77,25 @@ type Details struct {
 type AlertRule struct {
 	PolicyScanConfigId string `json:"policyScanConfigId"`
 	Name               string `json:"name"`
+}
+
+type AuthUrl struct {
+	HostUrl     string `json:"hostUrl,omitempty"`
+	ConsumerKey string `json:"consumerKey,omitempty"`
+}
+
+type OauthTokenJira struct {
+	AuthenticationUrl string `json:"authenticationUrl,omitempty"`
+	ConsumerKey       string `json:"consumerKey,omitempty"`
+	HostUrl           string `json:"hostUrl,omitempty"`
+	SecretKey         string `json:"secretKey,omitempty"`
+	TmpToken          string `json:"tmpToken,omitempty"`
+}
+
+type SecretKeyJira struct {
+	OauthToken    string `json:"oauthToken,omitempty"`
+	OauthCallBack string `json:"oauthCallBack,omitempty"`
+	Approve       string `json:"approve,omitempty"`
+	JiraUserName  string `json:"jiraUserName"`
+	JiraPassword  string `json:"jiraPassword"`
 }
