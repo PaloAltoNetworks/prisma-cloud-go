@@ -8,6 +8,8 @@ type Role struct {
 	LastModifiedBy          string               `json:"lastModifiedBy,omitempty"`
 	LastModifiedTs          int64                `json:"lastModifiedTs,omitempty"`
 	AccountGroupIds         []string             `json:"accountGroupIds"`
+	ResourceListIds         []string             `json:"resourceListIds"`
+	CodeRepositoryIds       []string             `json:"codeRepositoryIds"`
 	AssociatedUsers         []string             `json:"associatedUsers"`
 	RestrictDismissalAccess bool                 `json:"restrictDismissalAccess,omitempty"`
 	AccountGroups           []AccountGroup       `json:"accountGroups,omitempty"`
