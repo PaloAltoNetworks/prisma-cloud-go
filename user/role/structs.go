@@ -11,7 +11,7 @@ type Role struct {
 	ResourceListIds         []string             `json:"resourceListIds"`
 	CodeRepositoryIds       []string             `json:"codeRepositoryIds"`
 	AssociatedUsers         []string             `json:"associatedUsers"`
-	RestrictDismissalAccess bool                 `json:"restrictDismissalAccess,omitempty"`
+	RestrictDismissalAccess bool                 `json:"restrictDismissalAccess"`
 	AccountGroups           []AccountGroup       `json:"accountGroups,omitempty"`
 	AdditionalAttributes    AdditionalAttributes `json:"additionalAttributes"`
 }
