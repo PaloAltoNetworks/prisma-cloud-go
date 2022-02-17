@@ -21,8 +21,21 @@ func Types(c pc.PrismaCloudClient) ([]string, error) {
 	return ans, err
 }
 
+// GetPrismaId returns prisma id.
+func GetPrismaId(c pc.PrismaCloudClient) (string, error) {
+	c.Log(pc.LogAction, "(get) prisma id")
+
+	var ans LicenseInfo
+
+	path := make([]string, 0, len(LicenseSuffix)+1)
+	path = append(path, LicenseSuffix...)
+
+	_, err := c.Communicate("GET", path, nil, nil, &ans)
+	return ans.PrismaId, err
+}
+
 // List returns all your integrations, optionally filtered by type.
-func List(c pc.PrismaCloudClient, t string, prismaId string) ([]Integration, error) {
+func List(c pc.PrismaCloudClient, t string, prismaIdRequired bool) ([]Integration, error) {
 	c.Log(pc.LogAction, "(get) list of %s", plural)
 
 	var query url.Values
@@ -34,7 +47,12 @@ func List(c pc.PrismaCloudClient, t string, prismaId string) ([]Integration, err
 	var ans []Integration
 
 	path := make([]string, 0, len(v1Suffix)+len(Suffix)+1)
-	if prismaId != "" {
+	if prismaIdRequired {
+		prismaId, err := GetPrismaId(c)
+		if err != nil {
+			return nil, err
+		}
+
 		path = append(path, v1Suffix...)
 		path = append(path, prismaId)
 	}
@@ -48,10 +66,10 @@ func List(c pc.PrismaCloudClient, t string, prismaId string) ([]Integration, err
 }
 
 // Identify returns the ID for the given integration name.
-func Identify(c pc.PrismaCloudClient, name string, prismaId string) (string, error) {
+func Identify(c pc.PrismaCloudClient, name string, prismaIdRequired bool) (string, error) {
 	c.Log(pc.LogAction, "(get) id for %s: %s", singular, name)
 
-	list, err := List(c, "", prismaId)
+	list, err := List(c, "", prismaIdRequired)
 	if err != nil {
 		return "", err
 	}
@@ -66,16 +84,22 @@ func Identify(c pc.PrismaCloudClient, name string, prismaId string) (string, err
 }
 
 // Get returns integration details for the specified ID.
-func Get(c pc.PrismaCloudClient, id string, prismaId string) (Integration, error) {
+func Get(c pc.PrismaCloudClient, id string, prismaIdRequired bool) (Integration, error) {
 	c.Log(pc.LogAction, "(get) %s: %s", singular, id)
 
 	var ans Integration
 
 	path := make([]string, 0, len(v1Suffix)+len(Suffix)+1)
-	if prismaId != "" {
+	if prismaIdRequired {
+		prismaId, err := GetPrismaId(c)
+		if err != nil {
+			return ans, err
+		}
+
 		path = append(path, v1Suffix...)
 		path = append(path, prismaId)
 	}
+
 	path = append(path, Suffix...)
 	path = append(path, id)
 
@@ -84,24 +108,30 @@ func Get(c pc.PrismaCloudClient, id string, prismaId string) (Integration, error
 }
 
 // Create adds an integration with the specified external system.
-func Create(c pc.PrismaCloudClient, obj Integration, prismaId string) error {
-	return createUpdate(false, c, obj, prismaId)
+func Create(c pc.PrismaCloudClient, obj Integration, prismaIdRequired bool) error {
+	return createUpdate(false, c, obj, prismaIdRequired)
 }
 
 // Update modifies the specified integration.
-func Update(c pc.PrismaCloudClient, obj Integration, prismaId string) error {
-	return createUpdate(true, c, obj, prismaId)
+func Update(c pc.PrismaCloudClient, obj Integration, prismaIdRequired bool) error {
+	return createUpdate(true, c, obj, prismaIdRequired)
 }
 
 // Delete removes the integration for the specified ID.
-func Delete(c pc.PrismaCloudClient, id string, prismaId string) error {
+func Delete(c pc.PrismaCloudClient, id string, prismaIdRequired bool) error {
 	c.Log(pc.LogAction, "(delete) %s: %s", singular, id)
 
 	path := make([]string, 0, len(v1Suffix)+len(Suffix)+1)
-	if prismaId != "" {
+	if prismaIdRequired {
+		prismaId, err := GetPrismaId(c)
+		if err != nil {
+			return err
+		}
+
 		path = append(path, v1Suffix...)
 		path = append(path, prismaId)
 	}
+
 	path = append(path, Suffix...)
 	path = append(path, id)
 
@@ -109,7 +139,7 @@ func Delete(c pc.PrismaCloudClient, id string, prismaId string) error {
 	return err
 }
 
-func createUpdate(exists bool, c pc.PrismaCloudClient, obj Integration, prismaId string) error {
+func createUpdate(exists bool, c pc.PrismaCloudClient, obj Integration, prismaIdRequired bool) error {
 	var (
 		logMsg strings.Builder
 		method string
@@ -134,7 +164,12 @@ func createUpdate(exists bool, c pc.PrismaCloudClient, obj Integration, prismaId
 	c.Log(pc.LogAction, logMsg.String())
 
 	path := make([]string, 0, len(v1Suffix)+len(Suffix)+1)
-	if prismaId != "" {
+	if prismaIdRequired {
+		prismaId, err := GetPrismaId(c)
+		if err != nil {
+			return err
+		}
+
 		path = append(path, v1Suffix...)
 		path = append(path, prismaId)
 	}

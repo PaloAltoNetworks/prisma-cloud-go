@@ -127,3 +127,7 @@ type Region struct {
 	CloudType     string `json:"cloudType"`
 	SdkId         string `json:"sdkId"`
 }
+
+type LicenseInfo struct {
+	PrismaId string `json:"prismaId"`
+}

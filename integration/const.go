@@ -6,8 +6,8 @@ const (
 )
 
 var Suffix = []string{"integration"}
-
 var v1Suffix = []string{"api", "v1", "tenant"}
+var LicenseSuffix = []string{"license"}
 
 var InboundIntegrations = []string{"okta_idp", "qualys", "tenable"}
 
