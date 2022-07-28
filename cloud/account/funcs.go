@@ -198,6 +198,10 @@ func createUpdate(exists bool, c pc.PrismaCloudClient, account interface{}) erro
 		Suffix = []string{"v2/cloud"}
 		path = append(path, Suffix...)
 		Suffix = []string{"cloud"}
+	} else if cloudType == TypeAws && method == "PUT" {
+		Suffix = []string{"v2/cloud"}
+		path = append(path, Suffix...)
+		Suffix = []string{"cloud"}
 	} else {
 		path = append(path, Suffix...)
 	}
