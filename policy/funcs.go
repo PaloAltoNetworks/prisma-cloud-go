@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	pc "github.com/paloaltonetworks/prisma-cloud-go"
+	"gopkg.in/yaml.v2"
 )
 
 // List returns a list of available policies, both system default and custom.
@@ -77,6 +78,36 @@ func Delete(c pc.PrismaCloudClient, id string) error {
 	return err
 }
 
+// Validate the metadata.code string for a code security build policy.
+func ValidateBuildPolicy(c pc.PrismaCloudClient, policy Policy) error {
+	var code map[interface{}]interface{}
+	var codeStr string
+	c.Log(pc.LogAction, "(validate) %s", singular)
+	c.Log(pc.LogAction, "(validate) policy.Rule.Children %s", policy.Rule.Children)
+
+	if len(policy.Rule.Children) > 0 {
+		codeStr = policy.Rule.Children[0].Metadata.Code
+		if codeStr == "" {
+			return nil
+		}
+	} else {
+		return nil
+	}
+
+	if err := yaml.Unmarshal([]byte(codeStr), &code); err != nil {
+		return err
+	}
+
+	codeMapS := convertMapI2MapS(code)
+	path := make([]string, 0, len(Suffix)+1)
+	path = append(path, BridgecrewSuffix...)
+	path = append(path, "definition/none")
+
+	c.Log(pc.LogAction, "(validate) printing path:\n%s", path)
+	_, err := c.Communicate("POST", path, nil, codeMapS, nil)
+	return err
+}
+
 func createUpdate(exists bool, c pc.PrismaCloudClient, policy Policy) error {
 	var (
 		logMsg strings.Builder
@@ -109,4 +140,34 @@ func createUpdate(exists bool, c pc.PrismaCloudClient, policy Policy) error {
 
 	_, err := c.Communicate(method, path, nil, policy, nil)
 	return err
+}
+
+// ConvertMapI2MapS walks the given dynamic build policy object recursively, and
+// converts maps with interface{} key type to maps with string key type.
+func convertMapI2MapS(v interface{}) interface{} {
+	switch x := v.(type) {
+	case map[interface{}]interface{}:
+		m := map[string]interface{}{}
+		for k, v2 := range x {
+			switch k2 := k.(type) {
+			case string: // Fast check if it's already a string
+				m[k2] = convertMapI2MapS(v2)
+			default:
+				m[fmt.Sprint(k)] = convertMapI2MapS(v2)
+			}
+		}
+		v = m
+
+	case []interface{}:
+		for i, v2 := range x {
+			x[i] = convertMapI2MapS(v2)
+		}
+
+	case map[string]interface{}:
+		for k, v2 := range x {
+			x[k] = convertMapI2MapS(v2)
+		}
+	}
+
+	return v
 }
