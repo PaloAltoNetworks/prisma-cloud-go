@@ -17,12 +17,13 @@ const (
 
 // Valid values for Policy.PolicyType.
 const (
-	PolicyTypeConfig     = "config"
-	PolicyTypeAuditEvent = "audit_event"
-	PolicyTypeNetwork    = "network"
-	PolicyTypeIAM        = "iam"
-	PolicyTypeAnomaly    = "anomaly"
-	PolicyTypeData       = "data"
+	PolicyTypeConfig      = "config"
+	PolicyTypeAuditEvent  = "audit_event"
+	PolicyTypeNetwork     = "network"
+	PolicyTypeIAM         = "iam"
+	PolicyTypeAnomaly     = "anomaly"
+	PolicyTypeData        = "data"
+	RuleTypeNetworkConfig = "NetworkConfig"
 )
 
 // Valid values for Policy.Rule.Severity.
