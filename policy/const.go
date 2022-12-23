@@ -5,6 +5,7 @@ const (
 	plural   = "policies"
 )
 
+// Valid values for Policy.Rule.RuleType.
 const (
 	RuleTypeConfig        = "Config"
 	RuleTypeAuditEvent    = "AuditEvent"
