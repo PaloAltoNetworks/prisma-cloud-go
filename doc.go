@@ -15,7 +15,7 @@ initialize the connection:
 
     func main() {
         client := &prismacloud.Client{}
-        if err := c.Initialize("creds.json"); err != nil {
+        if err := client.Initialize("creds.json"); err != nil {
             log.Fatalf("Failed to connect: %s", err)
         }
 
