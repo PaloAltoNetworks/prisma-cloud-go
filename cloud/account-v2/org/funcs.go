@@ -95,6 +95,22 @@ func Delete(c pc.PrismaCloudClient, cloudType, id string) error {
 	return err
 }
 
+func DisableCloudAccount(c pc.PrismaCloudClient, accountId string) error {
+	var (
+		method string
+	)
+	method = "PATCH"
+
+	path := make([]string, 0, len(Suffix)+1)
+	path = append(path, "cloud")
+	path = append(path, accountId)
+	path = append(path, "status")
+	path = append(path, "false")
+
+	_, err := c.Communicate(method, path, nil, nil, nil)
+	return err
+}
+
 func createUpdate(exists bool, c pc.PrismaCloudClient, account interface{}) error {
 	var (
 		logMsg strings.Builder

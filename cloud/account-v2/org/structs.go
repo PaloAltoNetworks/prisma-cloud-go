@@ -50,6 +50,7 @@ type AwsOrg struct {
 	Name                  string               `json:"name"`
 	RoleArn               string               `json:"roleArn"`
 	AccountType           string               `json:"accountType"`
+	GroupIds              []string             `json:"groupIds"`
 	HierarchySelection    []HierarchySelection `json:"hierarchySelection"`
 	Features              []Features           `json:"features"`
 }
