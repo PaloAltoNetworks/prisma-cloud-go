@@ -7,13 +7,11 @@ const (
 
 var DeleteSuffix = []string{"cloud"}
 
-var Suffix = []string{"cas", "v1", "aws_account"}
+var Suffix = []string{"cas", "v1"}
 
-var ListSuffix = []string{"v1", "cloudAccounts", "awsAccounts"}
+var ListSuffix = []string{"v1", "cloudAccounts"}
 
 const (
 	TypeAwsOrg   = "aws"
 	TypeAzureOrg = "azure"
-	TypeGcpOrg   = "gcp"
-	TypeOci      = "oci"
 )
