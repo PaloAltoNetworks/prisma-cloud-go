@@ -27,15 +27,23 @@ type Rule struct {
 }
 
 type Target struct {
-	AccountGroups    []string `json:"accountGroups"`
-	ExcludedAccounts []string `json:"excludedAccounts,omitempty"`
-	Regions          []string `json:"regions,omitempty"`
-	Tags             []Tag    `json:"tags,omitempty"`
+	AccountGroups         []string              `json:"accountGroups"`
+	ExcludedAccounts      []string              `json:"excludedAccounts,omitempty"`
+	Regions               []string              `json:"regions,omitempty"`
+	Tags                  []Tag                 `json:"tags,omitempty"`
+	AlertRulePolicyFilter AlertRulePolicyFilter `json:"alertRulePolicyFilter"`
 }
 
 type Tag struct {
 	Key    string   `json:"key"`
 	Values []string `json:"values"`
+}
+
+type AlertRulePolicyFilter struct {
+	PolicySeverity     []string `json:"policy.severity"`
+	CloudType          []string `json:"cloud.type"`
+	Label              []string `json:"policy.label"`
+	ComplianceStandard []string `json:"policy.complianceStandard"`
 }
 
 type NotificationConfig struct {
