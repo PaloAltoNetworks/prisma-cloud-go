@@ -27,11 +27,11 @@ type Rule struct {
 }
 
 type Target struct {
-	AccountGroups         []string              `json:"accountGroups"`
-	ExcludedAccounts      []string              `json:"excludedAccounts,omitempty"`
-	Regions               []string              `json:"regions,omitempty"`
-	Tags                  []Tag                 `json:"tags,omitempty"`
-	AlertRulePolicyFilter AlertRulePolicyFilter `json:"alertRulePolicyFilter"`
+	AccountGroups    []string     `json:"accountGroups"`
+	ExcludedAccounts []string     `json:"excludedAccounts,omitempty"`
+	Regions          []string     `json:"regions,omitempty"`
+	Tags             []Tag        `json:"tags,omitempty"`
+	ResourceList     ResourceList `json:"includedResourceLists"`
 }
 
 type Tag struct {
@@ -39,11 +39,8 @@ type Tag struct {
 	Values []string `json:"values"`
 }
 
-type AlertRulePolicyFilter struct {
-	PolicySeverity     []string `json:"policy.severity"`
-	CloudType          []string `json:"cloud.type"`
-	Label              []string `json:"policy.label"`
-	ComplianceStandard []string `json:"policy.complianceStandard"`
+type ResourceList struct {
+	IncludedResourceLists []string `json:"computeAccessGroupIds"`
 }
 
 type NotificationConfig struct {
