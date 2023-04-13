@@ -196,7 +196,6 @@ func createUpdate(exists bool, c pc.PrismaCloudClient, account interface{}) erro
 		path = append(path, id)
 	}
 
-	fmt.Println(account)
 	_, err := c.Communicate(method, path, nil, account, nil)
 	return err
 
