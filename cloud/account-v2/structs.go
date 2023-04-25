@@ -213,6 +213,7 @@ type CloudAccountGcp struct {
 	GroupIds    []string `json:"groupIds"`
 	Name        string   `json:"name"`
 	AccountType string   `json:"accountType"`
+	ProjectId   string   `json:"projectId"`
 }
 
 type GcpCredentials struct {
