@@ -42,24 +42,39 @@ type Group struct {
 }
 
 type Aws struct {
-	AccountId   string     `json:"accountId"`
-	AccountType string     `json:"accountType"`
-	Enabled     bool       `json:"enabled"`
-	Features    []Features `json:"features"`
-	GroupIds    []string   `json:"groupIds"`
-	Name        string     `json:"name"`
-	RoleArn     string     `json:"roleArn"`
+	AccountId         string              `json:"accountId"`
+	AccountType       string              `json:"accountType"`
+	Enabled           bool                `json:"enabled"`
+	Features          []Features          `json:"features"`
+	GroupIds          []string            `json:"groupIds"`
+	Name              string              `json:"name"`
+	RoleArn           string              `json:"roleArn"`
+	StorageScanConfig []StorageScanConfig `json:"storage_scan_config"`
+	StorageVVID       string              `json:"storageVVID"`
 }
 
 type AwsV2 struct {
-	CloudAccountResp          CloudAccountResp `json:"cloudAccount"`
-	Name                      string           `json:"name"`
-	RoleArn                   string           `json:"roleArn"`
-	ExternalId                string           `json:"externalId"`
-	HasMemberRole             bool             `json:"hasMemberRole"`
-	TemplateUrl               string           `json:"templateUrl"`
-	GroupIds                  []string         `json:"groupIds"`
-	EventbridgeRuleNamePrefix string           `json:"eventBridgeRuleNamePrefix"`
+	CloudAccountResp          CloudAccountResp    `json:"cloudAccount"`
+	Name                      string              `json:"name"`
+	RoleArn                   string              `json:"roleArn"`
+	ExternalId                string              `json:"externalId"`
+	HasMemberRole             bool                `json:"hasMemberRole"`
+	TemplateUrl               string              `json:"templateUrl"`
+	GroupIds                  []string            `json:"groupIds"`
+	EventbridgeRuleNamePrefix string              `json:"eventBridgeRuleNamePrefix"`
+	StorageScanConfig         []StorageScanConfig `json:"storage_scan_config"`
+	StorageVVID               string              `json:"storageVVID"`
+}
+
+type StorageScanConfig struct {
+	Buckets     Buckets `json:"buckets"`
+	ScanOption  string  `json:"scanOption"`
+	SnsTopicArn string  `json:"snsTopicArn"`
+}
+
+type Buckets struct {
+	Backward []string `json:"backward"`
+	Forward  []string `json:"forward"`
 }
 
 type Features1 struct {
