@@ -27,7 +27,6 @@ func List(c pc.PrismaCloudClient) ([]Pattern, error) {
 	var ans ListBody
 	path := make([]string, 0, len(Suffix)+1)
 	path = append(path, Suffix...)
-
 	dlpTenantId, err1 := GetTenantId(c)
 	if err1 != nil {
 		return nil, err1
@@ -91,12 +90,10 @@ func Delete(c pc.PrismaCloudClient, id string) error {
 
 	path := make([]string, 0, len(Suffix)+1)
 	path = append(path, Suffix...)
-
 	dlpTenantId, err1 := GetTenantId(c)
 	if err1 != nil {
 		return err1
 	}
-
 	path = append(path, dlpTenantId)
 	path = append(path, "pattern-id")
 	path = append(path, id)
@@ -130,14 +127,13 @@ func createUpdate(exists bool, c pc.PrismaCloudClient, pattern Pattern) error {
 
 	path := make([]string, 0, len(Suffix)+1)
 	path = append(path, Suffix...)
-
 	dlpTenantId, err1 := GetTenantId(c)
 	if err1 != nil {
 		return err1
 	}
-	
 	path = append(path, dlpTenantId)
 	if exists {
+		path = append(path, "pattern-id")
 		path = append(path, pattern.Id)
 	}
 
