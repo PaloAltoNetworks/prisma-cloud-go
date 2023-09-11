@@ -26,7 +26,7 @@ func Get(c pc.PrismaCloudClient, id string) (ResourceList, error) {
 	path = append(path, id)
 	var template ResourceList
 	if _, err := c.Communicate("GET", path, nil, nil, &template); err != nil {
-		return ResourceList{}, nil
+		return ResourceList{}, err
 	}
 	return template, nil
 }
