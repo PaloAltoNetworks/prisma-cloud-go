@@ -13,10 +13,8 @@ func List(c pc.PrismaCloudClient) (Response, error) {
 	path := make([]string, 0, len(Suffix)+1)
 	path = append(path, Suffix...)
 	if _, err := c.Communicate("GET", path, nil, nil, &res); err != nil {
-		fmt.Println("inside error func", res)
 		return res, err
 	}
-	fmt.Println("outside error func", res.Value)
 	return res, nil
 }
 
