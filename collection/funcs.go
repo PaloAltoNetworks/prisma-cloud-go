@@ -28,7 +28,7 @@ func Get(c pc.PrismaCloudClient, id string) (Collection, error) {
 	path = append(path, id)
 	var template Collection
 	if _, err := c.Communicate("GET", path, nil, nil, &template); err != nil {
-		return Collection{}, nil
+		return Collection{}, err
 	}
 	return template, nil
 }
