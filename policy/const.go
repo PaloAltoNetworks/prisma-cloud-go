@@ -36,3 +36,4 @@ const (
 )
 
 var Suffix = []string{"policy"}
+var BridgecrewSuffix = []string{"bridgecrew/api/v1/policies"}
