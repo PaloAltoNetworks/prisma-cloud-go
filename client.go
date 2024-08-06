@@ -326,6 +326,7 @@ func (c *Client) communicate(method string, suffix []string, query, data interfa
 	case http.StatusUnauthorized:
 		if !c.DisableReconnect && allowRetry {
 			if err = c.Authenticate(); err == nil {
+				log.Printf("Re-authentication successfull")
 				return c.communicate(method, suffix, query, data, ans, false)
 			}
 		}
@@ -333,10 +334,11 @@ func (c *Client) communicate(method string, suffix []string, query, data interfa
 	case http.StatusTooManyRequests:
 		delay := 1 << c.Retries
 		if delay <= c.RetryMaxDelay && delay > 0 && c.MaxRetries > 0 {
+			log.Printf("API received too many requests, retrying")
 			time.Sleep(time.Duration(delay) * time.Second)
 			c.MaxRetries = c.MaxRetries - 1
 			c.Retries = c.Retries + 1
-			return c.communicate(method, suffix, query, data, ans, false)
+			return c.communicate(method, suffix, query, data, ans, true)
 		} else if delay > c.RetryMaxDelay || c.MaxRetries <= 0 {
 			return nil, fmt.Errorf("max_retries or retry_max_delay insufficient")
 		}
