@@ -189,10 +189,11 @@ func (c *Client) Authenticate() error {
 	   always works.  So just do a full login again if we have the
 	   username and password, falling back to a token refresh.
 	*/
+	resourceUUID := generateUUID()
 	if c.Username != "" && c.Password != "" {
 		c.Log(LogAction, "(auth) retrieving jwt")
 		req := initial{c.Username, c.Password, c.CustomerName}
-		_, err = c.communicate("POST", []string{"login"}, nil, &req, &ans, false, "")
+		_, err = c.communicate("POST", []string{"login"}, nil, &req, &ans, false, resourceUUID)
 	} else if c.JsonWebToken != "" {
 		c.Log(LogAction, "(auth) refreshing jwt")
 		_, err = c.communicate("GET", []string{"auth_token", "extend"}, nil, nil, &ans, false, "")
@@ -350,7 +351,7 @@ func (c *Client) communicate(method string, suffix []string, query, data interfa
 		retries++
 		if c.RetryType == "exponential_backoff" {
 			delay = 1 << retries
-		} else {
+		} else if c.RetryType == "linear_backoff" {
 			delay = 1 + retries
 		}
 
